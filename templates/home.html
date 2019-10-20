@@ -1,12 +1,8 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
-  <head>
-    <div class='home'>
-    <meta charset="utf-8">
-    <center><b>This is my Python-powered Web Tool </center></b>
-    <title>title</title>
-  </head>
-  <body>
-    Testing body language here
-  </body>
-</html>
+{% extends "layout.html" %}
+{% block content %}
+  <div class="home">
+    <h1>A Python product</h1>
+    <p>This website was built with Python via the Flask framework.</p>
+  </div>
+{% endblock %}
