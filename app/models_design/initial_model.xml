@@ -2,7 +2,7 @@
 <!-- SQL XML created by WWW SQL Designer, https://github.com/ondras/wwwsqldesigner/ -->
 <!-- Active URL: https://ondras.zarovi.cz/sql/demo/ -->
 <sql>
-<datatypes db="mysql">
+<datatypes db="postgres">
 	<group label="Numeric" color="rgb(238,238,170)">
 		<type label="Integer" length="0" sql="INTEGER" quote=""/>
 	 	<type label="TINYINT" length="0" sql="TINYINT" quote=""/>
@@ -37,35 +37,47 @@
 		<type label="SET" length="1" sql="SET" quote=""/>
 		<type label="Bit" length="0" sql="bit" quote=""/>
 	</group>
-</datatypes><table x="328" y="163" name="Users">
-<row name="id" null="1" autoincrement="1">
+</datatypes><table x="400" y="86" name="Users">
+<row name="id" null="0" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
-<row name="name" null="1" autoincrement="0">
+<row name="email" null="0" autoincrement="0">
+<datatype>VARCHAR</datatype>
+<default>'NULL'</default></row>
+<row name="username" null="0" autoincrement="0">
 <datatype>VARCHAR(32)</datatype>
-<default>NULL</default></row>
-<key type="PRIMARY" name="">
-<part>id</part>
-</key>
-</table>
-<table x="682" y="218" name="Quotes">
-<row name="id" null="1" autoincrement="1">
-<datatype>INTEGER</datatype>
-<default>NULL</default></row>
-<row name="people_quoted_id" null="0" autoincrement="0">
-<datatype>INTEGER</datatype>
-<default>NULL</default></row>
-<row name="posted_datetime" null="0" autoincrement="0">
+<default>'NULL'</default></row>
+<row name="password_hash" null="0" autoincrement="0">
+<datatype>VARCHAR(32)</datatype>
+<default>'NULL'</default></row>
+<row name="signup_datetime" null="0" autoincrement="0">
 <datatype>DATETIME</datatype>
 <default>'NULL'</default></row>
-<row name="quote_text" null="1" autoincrement="0">
-<datatype>INTEGER</datatype>
-<default>NULL</default></row>
 <key type="PRIMARY" name="">
 <part>id</part>
 </key>
 </table>
-<table x="464" y="321" name="people_quoted">
+<table x="987" y="137" name="Quote_Phrases">
+<row name="id" null="0" autoincrement="1">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="quote_id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default><relation table="Quotes" row="id" />
+</row>
+<row name="person_quoted_id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default><relation table="people_quoted" row="id" />
+</row>
+<row name="phrase_text" null="0" autoincrement="0">
+<datatype>MEDIUMTEXT</datatype>
+<default>'NULL'</default></row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+<comment>Each row is a single phrase spoken by a quoted user. One quote can have several of these phrases, which is why each quote_id is repeated for quotes with several phrases</comment>
+</table>
+<table x="397" y="231" name="people_quoted">
 <row name="id" null="0" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
@@ -78,5 +90,25 @@
 <key type="PRIMARY" name="">
 <part>id</part>
 </key>
+</table>
+<table x="669" y="81" name="Quotes">
+<row name="id" null="0" autoincrement="1">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="submitted_by_id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default><relation table="Users" row="id" />
+</row>
+<row name="primary_person_quoted_id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default><relation table="people_quoted" row="id" />
+</row>
+<row name="submitted_datetime" null="0" autoincrement="0">
+<datatype>DATETIME</datatype>
+<default>'NULL'</default></row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+<comment>Each row is a quote event. This table contains metadata about the quote and some text about context. </comment>
 </table>
 </sql>

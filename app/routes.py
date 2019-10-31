@@ -1,8 +1,6 @@
-from flask import Flask, render_template, flash, redirect,  url_for
 from forms import LoginForm
-from config import Config
-from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate
+from app import app
+from flask import render_template, flash, redirect,  url_for
 
 '''
 This is the main script for executing the flask functions so we can
@@ -13,10 +11,6 @@ Read more about Flask how-to here:
 https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-i-hello-world
 '''
 
-app = Flask(__name__)
-app.config.from_object(Config)
-db = SQLAlchemy(app)
-migrate = Migrate(app, db)
 
 @app.route('/')
 def home():

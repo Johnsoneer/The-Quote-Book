@@ -1,5 +1,4 @@
 import os
-basedir = os.path.abspath(os.path.dirname(__file__))
 
 '''
 # Purpose
@@ -13,5 +12,5 @@ class Config(object):
     SECRET_KEY = os.environ.get('QUOTEBOOK_SECRET')
 
 
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') 
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
