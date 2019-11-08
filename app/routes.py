@@ -1,6 +1,7 @@
-from forms import LoginForm
-from app import app
 from flask import render_template, flash, redirect,  url_for
+from app.forms import LoginForm
+from app import app
+
 
 '''
 This is the main script for executing the flask functions so we can

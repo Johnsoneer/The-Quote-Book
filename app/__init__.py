@@ -1,8 +1,8 @@
-from config import Config
+from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
-from flask import Flask
-#from models import *#users,people_quoted,quote_phrases,quotes 
+from config import Config
+#from models import *#users,people_quoted,quote_phrases,quotes
 
 
 app = Flask(__name__)
