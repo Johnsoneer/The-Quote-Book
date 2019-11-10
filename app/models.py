@@ -1,12 +1,15 @@
 from . import db
 from datetime import datetime
+from werkzeug.security import generate_password_hash, check_password_hash
+from flask_login import UserMixin
+from app import login
 
 '''
 The following classes spell out the db schema for flask to build/insert data into.
 This is all spelled out in the model.xml file.
 '''
 
-class users(db.Model):
+class users(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), index=True, unique=True)
     email = db.Column(db.String(120), index=True, unique=True)
@@ -16,6 +19,12 @@ class users(db.Model):
 
     def __repr__(self):
         return '<User {}>'.format(self.username)
+
+    def set_password(self,password):
+        self.password_hash = generate_password_hash(password)
+
+    def check_password(self, password):
+        return check_password_hash(self.password_hash,password)
 
 class people_quoted(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -48,3 +57,8 @@ class phrases(db.Model):
 
     def __repr__(self):
         return 'phrase: "{}", - {}'.format(self.phrase_text,self.person_quoted_id)
+
+
+@login.user_loader
+def load_user(id):
+    return users.query.get(int(id))
