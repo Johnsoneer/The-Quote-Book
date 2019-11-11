@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+{% extends "layout.html" %}
+
+{% block content %}
+
+{% if data['current_user'].is_admin %}
+
+<h1>TESTING User: {{ data['current_user'].username }}</h1>
+
+  <p1>
+    testing data['table']
+
+    {{data['table'] | safe}}
+  </p1>
+
+{% else %}
+<h1> <center>UNAUTHORIZED ADMIN ACCESS </center></h1>
+
+<p1><center>You do not have permission to view this page!!!</center></p1>
+
+{%  endif %}
+
+{% endblock %}

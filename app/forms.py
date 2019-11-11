@@ -29,6 +29,11 @@ class RegistrationForm(FlaskForm):
             raise ValidationError('Try a different username. That one is used already.')
 
     def validate_email(self, email):
-        user = User.query.filter_by(email=email.data).first()
+        user = users.query.filter_by(email=email.data).first()
         if user != None:
             raise ValidationError('Please use a different email address. That is used already.')
+
+class VerifyUserForm(FlaskForm):
+    verify = SubmitField(label='Verify User')
+
+    

@@ -13,7 +13,9 @@ class users(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), index=True, unique=True)
     email = db.Column(db.String(120), index=True, unique=True)
+    is_verified = db.Column(db.Boolean,  default = False)
     password_hash = db.Column(db.String(128))
+    is_admin = db.Column(db.Boolean, default = False)
     signup_datetime = db.Column(db.DateTime,index=True, default = datetime.utcnow)
     quotes = db.relationship('quotes',backref='submitted_by',lazy='dynamic')
 
@@ -25,6 +27,12 @@ class users(UserMixin, db.Model):
 
     def check_password(self, password):
         return check_password_hash(self.password_hash,password)
+
+    def check_admin_status(self):
+        return self.is_admin
+
+    def check_is_verified(self):
+        return self.is_verified
 
 class people_quoted(db.Model):
     id = db.Column(db.Integer, primary_key=True)

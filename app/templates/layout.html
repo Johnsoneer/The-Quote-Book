@@ -17,6 +17,11 @@
              {% else %}
             <li><a href="{{ url_for('logout') }}">Log Out </a></li>
             {% endif %}
+
+            {% if current_user.is_admin %}
+            <li><a href="{{ url_for('admin',username=current_user.username) }}">Admin Panel </a></li>
+            {% endif %}
+
           </ul>
         </nav></strong>
       </div>
