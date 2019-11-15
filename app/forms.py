@@ -19,7 +19,7 @@ class RegistrationForm(FlaskForm):
     username = StringField("Username", validators=[DataRequired()])
     email = StringField("Email Address",validators=[DataRequired()])
     password = StringField("Password", validators=[DataRequired()])
-    password_validator = StringField('Repeat Password',
+    password_validator = StringField('Confirm Password',
             validators=[DataRequired(),EqualTo('password')])
     submit = SubmitField('Register')
 
@@ -35,5 +35,3 @@ class RegistrationForm(FlaskForm):
 
 class VerifyUserForm(FlaskForm):
     verify = SubmitField(label='Verify User')
-
-    
