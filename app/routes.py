@@ -86,7 +86,7 @@ def admin(username):
     user_data = VerificationTable(user_data_raw,user)
 
     data = {'current_user':current_user,
-            'table':user_data.table_string}
+            'table':user_data_raw}
     return render_template('admin.html',title = 'Administrator Panel',data = data)
 
 @app.route('/verify_user/<username>/<verify_username>', methods=['GET','POST'])
@@ -99,12 +99,12 @@ def verify_user(username,verify_username):
         admin panel!")
         return redirect(url_for('home'))
 
-    user_to_verify = users.query.filter_by(id=verify_username).first()
+    user_to_verify = users.query.filter_by(username=verify_username).first()
     user_to_verify.is_verified = True
     db.session.add(user_to_verify)
     db.session.commit()
 
-    return redirect(url_for('/admin/<username>'))
+    return redirect(url_for('/admin/{}'.format(user.username)))
 
 
 if __name__=='__main__':

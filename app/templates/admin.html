@@ -5,13 +5,8 @@
 
 {% if data['current_user'].is_admin %}
 
-<h1>TESTING User: {{ data['current_user'].username }}</h1>
+<script type="text/javascript" src="{{ url_for('static', filename='js/popup.js') }}"></script>
 
-  <p1>
-    testing data['table']
-
-    {{data['table'] | safe}}
-  </p1>
 
 {% else %}
 <h1> <center>UNAUTHORIZED ADMIN ACCESS </center></h1>
@@ -19,5 +14,33 @@
 <p1><center>You do not have permission to view this page!!!</center></p1>
 
 {%  endif %}
+
+
+
+
+  <table>
+    <thead>
+      <th>Username</th>
+      <th>Email</th>
+      <th>VerifiedStatus</th>
+      <th>Verify User</th>
+    </thead>
+    <body>
+      {%for i in data['table']%}
+        <tr>
+            <th> {{ i.username }}</th>
+            <th> {{ i.email }}</th>
+            <th> {{ i.is_verified }}</th>
+            {% if i.is_verified != True %}
+              <th> <input type="button" onclick="areYouSure('{{ data['current_user'].username }}','{{ i.username }}')" value=Verify User> </th>
+            {% endif %}
+        </tr>
+      {%endfor%}
+    </body>
+
+
+      </div>
+  </body>
+
 
 {% endblock %}
