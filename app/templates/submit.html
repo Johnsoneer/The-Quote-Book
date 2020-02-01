@@ -1,0 +1,69 @@
+<!DOCTYPE HTML>
+{% extends "layout.html" %}
+
+{% block content %}
+
+<script type="text/javascript" src="{{ url_for('static', filename='js/popup.js') }}"></script>
+
+{# Import JQuery #}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/addForm.js') }}"></script>
+
+<style>
+    .is-hidden {
+        display: none;
+    }
+</style>
+
+
+<h1>
+  <center> Submit a New Quote! </center>
+</h1>
+<a id='add' href='#'>Add Phrase</a>
+  <form id="quote_form" action="" method="post" role="form">
+    {{ form.hidden_tag() }}
+
+    <div id="subforms-container">
+      {% for subform in form.phrases %}
+        <div id='phrase-{{ loop.index0 }}-form' class="subform" data-index='{{ loop.index0 }}'>
+          {{ subform.quoted_person_name.label }}
+          {{ subform.quoted_person_name(list='quoted_person_name_list')}}
+
+          <datalist id='quoted_person_name_list'>
+             {% for person in people %}
+              <option value= "{{person}}" SELECTED>{{ person }}</option>
+             {% endfor %}
+          </datalist>
+
+          {{ subform.phrase_text.label }}
+          {{ subform.phrase_text(size=500)}}
+
+        {% for error in subform.quoted_person_name.errors %}
+          <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+
+        <a class="remove" href='#'>Remove</a>
+      </div>
+      {% endfor %}
+    </div>
+    {{ form.context.label }}
+    </br>
+    {{ form.context()}}
+
+    <button type="submit" onclick="confirmNewQuotedPerson()">Submit</button>
+
+
+  </form>
+
+  {# Form template #}
+    <div id="phrase-_-form" class="is-hidden" data-index="_">
+        <label for="phrases-_-quoted_person_name">Person Quoted</label>
+        <input id="phrases-_-quoted_person_name" list = 'quoted_person_name_list' name="phrases-_-quoted_person_name" required type="text" value >
+
+        <label for="phrases-_-phrase_text">Phrase Text</label>
+        <textarea id="phrases-_-phrase_text" name="phrases-_-phrase_text" required size=500></textarea>
+
+        <a class="remove" href="#">Remove</a>
+
+    </div>
+{% endblock %}
