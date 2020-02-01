@@ -10,6 +10,8 @@ This is all spelled out in the model.xml file.
 '''
 
 class users(UserMixin, db.Model):
+
+    #schema
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), index=True, unique=True)
     email = db.Column(db.String(120), index=True, unique=True)
@@ -17,6 +19,8 @@ class users(UserMixin, db.Model):
     password_hash = db.Column(db.String(128))
     is_admin = db.Column(db.Boolean, default = False)
     signup_datetime = db.Column(db.DateTime,index=True, default = datetime.utcnow)
+
+    #relationship
     quotes = db.relationship('quotes',backref='submitted_by',lazy='dynamic')
 
     def __repr__(self):
@@ -36,13 +40,11 @@ class users(UserMixin, db.Model):
 
 class people_quoted(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    first_name = db.Column(db.String(32))
-    last_name_initial = db.Column(db.String(1))
-    quotes = db.relationship('quotes',backref='primary_person_quoted',lazy='dynamic')
-    quote_phrases = db.relationship('phrases',backref='person_quoted',lazy='dynamic')
+    name = db.Column(db.String(32))
+    #quotes = db.relationship('quotes',backref='primary_person_quoted',lazy='dynamic')
 
     def __repr__(self):
-        return '<person_quoted {} {}>'.format(self.first_name,self.last_name_initial)
+        return '<person_quoted {}>'.format(self.name)
 
 class quotes(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -50,7 +52,7 @@ class quotes(db.Model):
     primary_person_quoted_id = db.Column(db.Integer,db.ForeignKey('people_quoted.id'))
     submitted_datetime = db.Column(db.DateTime,index=True,default=datetime.utcnow)
     context = db.Column(db.String(140))
-    phrases = db.relationship('phrases',backref='from_quote',lazy='dynamic')
+    # phrases = db.relationship('phrases',backref='from_quote',lazy='dynamic')
 
     def __repr__(self):
         return "<quote {}, submitted_by {}, referencing {} at {}>".format(
@@ -58,10 +60,23 @@ class quotes(db.Model):
         )
 
 class phrases(db.Model):
+
+    #schema
     id = db.Column(db.Integer, primary_key=True)
     quote_id = db.Column(db.Integer,db.ForeignKey('quotes.id'))
     person_quoted_id = db.Column(db.Integer,db.ForeignKey('people_quoted.id'))
     phrase_text = db.Column(db.String(500))
+
+    #relationships
+    quote = db.relationship('quotes',
+                            backref=db.backref('phrases',
+                                                lazy='dynamic',
+                                                collection_class=list))
+    person_quoted = db.relationship('people_quoted',
+                                    backref=db.backref('phrases',
+                                                lazy='dynamic',
+                                                collection_class=list))
+
 
     def __repr__(self):
         return 'phrase: "{}", - {}'.format(self.phrase_text,self.person_quoted_id)
