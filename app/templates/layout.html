@@ -15,6 +15,7 @@
              {% if current_user.is_anonymous %}
             <li><a href="{{ url_for('login') }}">Log In</a></li>
              {% else %}
+            <li><a href="{{ url_for('quote_page') }}">Quotes</a></li>
             <li><a href="{{ url_for('submit') }}">Submit</a></li>
             <li><a href="{{ url_for('logout') }}">Log Out </a></li>
             {% endif %}
@@ -28,7 +29,6 @@
       </div>
     </header>
       <div class="container">
-        <hr>
        {% with messages = get_flashed_messages() %}
        {% if messages %}
        <ul>

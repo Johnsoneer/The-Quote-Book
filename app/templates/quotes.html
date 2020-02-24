@@ -1,0 +1,42 @@
+<!DOCTYPE HTML>
+{% from "macros.html" import render_pagination with context %}
+{% extends "layout.html" %}
+
+{% block content %}
+
+
+
+
+<div>
+{{ render_pagination(pagination, 'quote_page') }}
+</div>
+<br></br>
+<hr>
+{%for quote in quotes_data%}
+
+  <div class ='quote'>
+    {% if quote.context %}
+      <p class='context'>
+          CONTEXT: {{ quote.context }}
+      </p>
+    {% endif %}
+    {%for phrase in quote.phrases%}
+      <br />
+        <speaker>
+          {{ speakers.query.filter_by(id = phrase.person_quoted_id).first().name }}
+        </speaker>
+        <blockquote>
+          <phrasebody>
+            {{ phrase.phrase_text }}
+          </phrasebody>
+        </blockquote>
+    {%endfor%}
+    <br />
+
+
+  </div>
+  <hr>
+
+{%endfor%}
+{{ render_pagination(pagination,'quote_page') }}
+{% endblock %}

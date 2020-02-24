@@ -1,5 +1,6 @@
 from flask import render_template, flash, redirect,  url_for,request
 from flask_login import current_user, login_user, logout_user,login_required
+from flask_paginate import Pagination, get_page_parameter, get_page_args
 from werkzeug.urls import url_parse
 from app.forms import LoginForm, RegistrationForm, VerifyUserForm, SubmitQuoteForm
 from app import app,db
@@ -82,7 +83,7 @@ def admin(username):
         return redirect(url_for('home'))
 
     user_data_raw = users.query.all()
-    user_data = VerificationTable(user_data_raw,user)
+
 
     data = {'current_user':current_user,
             'table':user_data_raw}
@@ -145,7 +146,7 @@ def submit():
                                 person_quoted_id = person_quoted_id)
             new_quote.phrases.append(new_phrase)
             quoted_in_session.append(person_quoted_id)
-            print(phrase.phrase_text.data)
+
         # whoever spoke last is the primary person quoted
         new_quote.primary_person_quoted_id = quoted_in_session[-1]
 
@@ -156,6 +157,24 @@ def submit():
         return redirect(url_for('home'))
     return render_template('submit.html', title = 'Submit',
                         people = people, form = submit_form)
+
+
+@app.route('/quote')
+@login_required
+def quote_page():
+
+    page = request.args.get(get_page_parameter(), type=int, default=1)
+    per_page = app.config['QUOTES_PER_PAGE']
+    quotes_paginated = quotes.query.paginate(page, per_page, False)
+    speakers = people_quoted
+
+    return render_template('quotes.html',
+                            title = 'Quotes',
+                            quotes_data = quotes_paginated.items,
+                            speakers = speakers,
+                            pagination = quotes_paginated)
+
+
 
 
 if __name__=='__main__':
