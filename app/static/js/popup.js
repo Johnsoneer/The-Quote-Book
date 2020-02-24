@@ -34,7 +34,7 @@ function confirmNewQuotedPerson() {
     if (people_list.map(toLower).includes(person_to_compare)==false &&
         confirm("This person you're quoting looks new. Make sure you've only \
 listed their first name (no spaces). If someone else has their name \
-already, then add their last initial.\n\n Add "+user_names[index]+ " to the \
+already, then add their last initial.\n\n Add '"+user_names[index]+ "' to the \
 list of people quoted?")){
         document.getElementById('quote_form').submit();
         console.log('confirmed');

@@ -4,6 +4,80 @@ body {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   color: #444;
 }
+.quote main {
+  margin: 20px;
+  padding: 10px;
+  opacity: .9;
+
+}
+.quote speaker {
+  font-weight: bold;
+  font-size: 20px;
+  margin: 90px;
+}
+.quote phrasebody {
+  font-family: "monospace"
+  font-size: 20px;
+  margin: 20px;
+}
+.context {
+  font-size: 20px;
+  text-align: center;
+  border: 3px solid #59585c;
+  padding: 15px;
+  margin: 10px;
+}
+pagination {
+  display: inline-block;
+}
+
+.pagination a {
+  color: black;
+  float: left;
+  padding: 8px 16px;
+  text-decoration: none;
+  transition: background-color .3s;
+  border: 1px solid #ddd;
+  margin: 0 4px;
+}
+
+.pagination a.active {
+  background-color: #ddd;
+  color: white;
+  border: 1px solid #ddd;
+}
+.pagination a.ellipsis {
+  color: white;
+  border: 1px solid #ddd;
+}
+
+.pagination a:hover:not(.active) {background-color: #ddd;}
+
+blockquote {
+  background: #f9f9f9;
+  border-left: 10px solid #ccc;
+  font-family: monospace;
+  font-size: large;
+  margin: 1.5em 50px;
+  padding: 1.25em 10px;
+  quotes: "\201C""\201D""\2018""\2019";
+}
+blockquote:before {
+  color: #ccc;
+  content: open-quote;
+  font-size: 4em;
+  line-height: 0.1em;
+  margin-right: 0.25em;
+  vertical-align: -0.4em;
+}
+blockquote p {
+  display: inline;
+}
+blockquote:after{
+  content: no-close-quote;
+}
+
+
 /*
  * Formatting the header area
  */
