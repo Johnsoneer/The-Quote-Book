@@ -15,6 +15,9 @@
 {%for quote in quotes_data%}
 
   <div class ='quote'>
+    <p class='quote date'>
+        {{ quote.date }}
+    </p>
     {% if quote.context %}
       <p class='context'>
           CONTEXT: {{ quote.context }}
