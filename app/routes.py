@@ -149,7 +149,7 @@ def submit():
 
         # whoever spoke last is the primary person quoted
         new_quote.primary_person_quoted_id = quoted_in_session[-1]
-
+        new_quote.date = submit_form.quote_date.data 
         #add form data to the database
         db.session.add(new_quote)
         db.session.commit()

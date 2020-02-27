@@ -1,6 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, FormField, DateTimeField,FieldList, TextAreaField
 from wtforms.validators import DataRequired, Email, EqualTo,ValidationError,length
+from wtforms.fields.html5 import DateField
 from wtforms import Form
 from app.models import users
 from datetime import datetime
@@ -49,8 +50,12 @@ class phraseForm(Form):
     '''
     Subform of Quote form. Creates a new unique phrase for each speaker.
     '''
-    quoted_person_name = StringField("Person Quoted",validators = [DataRequired(),length(min=3,max=16)])
-    phrase_text = TextAreaField('What Did They Say?', validators= [DataRequired(), length(max=500)])
+    quoted_person_name = StringField("Person Quoted",
+                                    validators = [DataRequired(),
+                                    length(min=3,max=16)])
+    phrase_text = TextAreaField('What Did They Say?',
+                                validators= [DataRequired(),
+                                length(max=500)])
 
 class SubmitQuoteForm(FlaskForm):
     '''
@@ -61,3 +66,7 @@ class SubmitQuoteForm(FlaskForm):
                         min_entries=1,
                         max_entries=20)
     context = TextAreaField("Any context worth mentioning? (optional)")
+    quote_date = DateField('DatePicker',
+                            format='%Y-%m-%d',
+                            default=datetime.today(),
+                            validators = [DataRequired()])

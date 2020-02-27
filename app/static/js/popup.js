@@ -18,7 +18,9 @@ function confirmNewQuotedPerson() {
   var user_input = document.getElementsByTagName('input')
   var user_names = []
   for (index = 0; index < user_input.length; index++) {
-    if (!user_input[index].value.includes('.') && user_input[index].value.length>0) {
+    if (!user_input[index].value.includes('.')
+        && user_input[index].value.length>0
+        && !user_input[index].value.includes('-')) {
       user_names.push(user_input[index].value)
     }
   }
