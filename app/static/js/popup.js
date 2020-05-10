@@ -14,13 +14,19 @@ toLower = function(x){
   return x.toLowerCase();
 };
 
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+};
+
 function confirmNewQuotedPerson() {
   var user_input = document.getElementsByTagName('input')
+
   var user_names = []
   for (index = 0; index < user_input.length; index++) {
     if (!user_input[index].value.includes('.')
         && user_input[index].value.length>0
-        && !user_input[index].value.includes('-')) {
+        && !user_input[index].value.includes('-')
+        && !user_names.includes(user_input[index].value)) {
       user_names.push(user_input[index].value)
     }
   }
@@ -39,7 +45,7 @@ listed their first name (no spaces). If someone else has their name \
 already, then add their last initial.\n\n Add '"+user_names[index]+ "' to the \
 list of people quoted?")){
         document.getElementById('quote_form').submit();
-        console.log('confirmed');
+        console.log('confirmed: added name '+ user_names[index]);
       }  else if (people_list.map(toLower).includes(person_to_compare)){
         console.log('Name Existing in Database');
         document.getElementById('quote_form').submit();
@@ -49,3 +55,19 @@ list of people quoted?")){
   }
 
 };
+
+
+async function verifyDelete(username,deleting_quote_id) {
+  var txt
+    if (confirm("Are you sure you want to delete this quote?")) {
+      document.location.href='/delete_quote/'+username+"/"+deleting_quote_id;
+      await sleep(1000);
+    } else {
+    document.location.href='/admin_manage/'+username;
+    window.location.reload(true);
+  }
+
+  document.location.href='/admin_manage/'+username;
+  window.location.reload(true);
+  ;
+}

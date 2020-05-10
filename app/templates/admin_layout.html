@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+{% extends "layout.html" %}
+{% block content %}
+<header2>
+  <div>
+    <strong><nav>
+      <ul class="submenu">
+        {% if current_user.is_admin %}
+        <li><a href="{{ url_for('admin_verify',username = current_user.username) }}">Verify Users</a></li>
+        <li><a href="{{ url_for('admin_manage',username = current_user.username) }}">Manage Quotes</a></li>
+        {% endif %}
+
+      </ul>
+    </nav></strong>
+  </div>
+</header2>
+<body>
+  {% block nav %}{% endblock %}
+</body>
+{% endblock %}
