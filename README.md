@@ -4,11 +4,15 @@ A Web App that makes use of a friend's self-curated dataset of funny out-of-cont
 
 
 
-# Next Updates
+# Recent Updates
 
 ### TASK-10
+- Added 'Delete' functionality to get rid of quotes, if desired. (Admin-Only). 
+- Some cosmetic changes to the "Quotes" page. 
 
-- add in cleaner quotes to the database with full columns filled out.
+
+# Next Updates
+
 - Sub menu for viewing quotes.
   - order the quotes on the 'Quotes' page by date.
   - order the quotes by selected person_quoted
