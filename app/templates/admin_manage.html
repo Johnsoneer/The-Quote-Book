@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+{% extends "admin_layout.html" %}
+
+{% block nav %}
+{% if data['current_user'].is_admin %}
+
+<script type="text/javascript" src="{{ url_for('static', filename='js/popup.js') }}"></script>
+
+
+{% else %}
+<h1> <center>UNAUTHORIZED ADMIN ACCESS </center></h1>
+
+<p1><center>You do not have permission to view this page!!!</center></p1>
+
+{%  endif %}
+
+<table>
+  <thead>
+    <th>Date Submitted</th>
+    <th>Who is Quoted?</th>
+    <th>Phrases</th>
+  </thead>
+  <body>
+    {%for i in data['quotes'].index%}
+      <tr>
+        <th> {{ data['quotes']['submission_date'][i]}}</th>
+        <th> {{ data['quotes']['name'][i]}}</th>
+        <th> {{ data['quotes']['phrases'][i]}}</th>
+          <th> <input type="button"
+                      onclick="verifyDelete('{{ data['current_user'].username }}','{{ data['quotes']['quote_id'][i] }}')">
+                Delete </th>
+
+      </tr>
+    {%endfor%}
+  </body>
+
+
+    </div>
+</body>
+{% endblock %}

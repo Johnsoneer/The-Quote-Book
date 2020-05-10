@@ -5,7 +5,8 @@ from werkzeug.urls import url_parse
 from app.forms import LoginForm, RegistrationForm, VerifyUserForm, SubmitQuoteForm
 from app import app,db
 from app.models import users,people_quoted, quotes,phrases
-
+import pandas as pd
+import time
 
 
 '''
@@ -17,6 +18,17 @@ Read more about Flask how-to here:
 https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-i-hello-world
 '''
 
+def verify_administrator(username):
+    '''
+    Quick function to verify a user and, if they fail, boot them back to the home page.
+    '''
+    user = users.query.filter_by(username=username).first_or_404()
+    is_admin = user.is_admin
+    if is_admin ==False:
+        flash("You are not an administrator. Quit trying to access the \
+        admin panel!")
+        return redirect(url_for('home'))
+    return is_admin
 
 @app.route('/')
 def home():
@@ -72,39 +84,74 @@ def signup():
         return redirect(url_for('login'))
     return render_template('signup.html', title='Signup', form=form)
 
-@app.route('/admin/<username>', methods=['GET','POST'])
+@app.route('/admin_verify/<username>', methods=['GET','POST'])
 @login_required
-def admin(username):
-    user = users.query.filter_by(username=username).first_or_404()
-    is_admin = user.is_admin
-    if is_admin ==False:
-        flash("You are not an administrator. Quit trying to access the \
-        admin panel!")
-        return redirect(url_for('home'))
+def admin_verify(username):
+    if verify_administrator(username):
 
-    user_data_raw = users.query.all()
+        # pull all user data for verification
+        user_data_raw = users.query.all()
+        data = {'current_user':current_user,
+                'table':user_data_raw}
 
+        return render_template('admin_verify.html',
+                                title = 'Administrator Panel: Verify Users',
+                                data = data)
 
-    data = {'current_user':current_user,
-            'table':user_data_raw}
-    return render_template('admin.html',title = 'Administrator Panel',data = data)
+@app.route('/admin_manage/<username>', methods=['GET','POST'])
+@login_required
+def admin_manage(username):
+    if verify_administrator(username):
+        data = {}
+        # pull all quotes and their phrases for deletion if necessary.
+        quotes_data =  quotes.query.all()
+        phrases_data = phrases.query.all()
+        people_quoted_data = people_quoted.query.all()
+        phrases_df = pd.DataFrame([[x.quote_id,x.phrase_text] for x in phrases_data])
+        phrases_df.columns = ['quote_id','phrases']
+        quotes_df  = pd.DataFrame([[x.primary_person_quoted_id,x.id,x.submitted_datetime] for x in quotes_data])
+        quotes_df.columns = ['person_quoted','quote_id','submission_date']
+        people_quoted_df = pd.DataFrame([[x.id,x.name] for x in people_quoted_data])
+        people_quoted_df.columns = ['person_quoted','name']
+        quotes_df = quotes_df.merge(people_quoted_df,
+                              on='person_quoted',
+                              how='inner')
+        data['quotes'] = quotes_df.merge(phrases_df.groupby('quote_id').sum().reset_index(),
+                            on='quote_id',
+                            how='inner')
+        data['current_user'] = current_user
+        return render_template('admin_manage.html',
+                                title = 'Administrator Panel: Manage',
+                                data = data)
 
 @app.route('/verify_user/<username>/<verify_username>', methods=['GET','POST'])
 @login_required
 def verify_user(username,verify_username):
-    user = users.query.filter_by(username=username).first_or_404()
-    is_admin = user.is_admin
-    if is_admin ==False:
-        flash("You are not an administrator. Quit trying to access the \
-        admin panel!")
-        return redirect(url_for('home'))
+    if verify_administrator(username):
 
-    user_to_verify = users.query.filter_by(username=verify_username).first()
-    user_to_verify.is_verified = True
-    db.session.add(user_to_verify)
-    db.session.commit()
+        user_to_verify = users.query.filter_by(username=verify_username).first()
+        user_to_verify.is_verified = True
+        db.session.add(user_to_verify)
+        db.session.commit()
 
-    return redirect(url_for('/admin/{}'.format(user.username)))
+        return redirect(url_for('/admin_verify/{}'.format(user.username)))
+
+@app.route('/delete_quote/<username>/<quote_id>', methods=['GET','DELETE','POST'])
+@login_required
+def delete_quote(username,quote_id):
+    if verify_administrator(username):
+
+        del_quote = quotes.query.filter_by(id = quote_id).all()
+        del_phrases = phrases.query.filter_by(quote_id = quote_id).all()
+        for qt in del_quote:
+            for phr in del_phrases:
+                db.session.delete(phr)
+            db.session.delete(qt)
+        db.session.commit()
+    time.sleep(2)
+    return redirect(url_for('admin_manage',username=username))
+
+
 
 
 
@@ -139,6 +186,7 @@ def submit():
                 db.session.add(person_to_add)
                 db.session.commit()
                 person_quoted_id = person_to_add.id
+                people_list.append(person_lower)
             else:
                 person_quoted_id = people_quoted.query.filter_by(name=person).first_or_404().id
 
@@ -149,12 +197,13 @@ def submit():
 
         # whoever spoke last is the primary person quoted
         new_quote.primary_person_quoted_id = quoted_in_session[-1]
-        new_quote.date = submit_form.quote_date.data 
+        new_quote.date = submit_form.quote_date.data
         #add form data to the database
         db.session.add(new_quote)
         db.session.commit()
 
-        return redirect(url_for('home'))
+        flash("Successfully submitted quote! View it on the 'Quotes' page!" )
+        return redirect(url_for('submit'))
     return render_template('submit.html', title = 'Submit',
                         people = people, form = submit_form)
 
