@@ -17,6 +17,33 @@ and configure our server right here.
 Read more about Flask how-to here:
 https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-i-hello-world
 '''
+# Helper functions
+
+def clean_people_quoted_table():
+    '''
+    cleanup any existing quoted person if we can't find a quote of theirs.
+    works inplace.
+    '''
+
+    all_quoted_people_id = [name.primary_person_quoted_id for name in quotes.query.all()]
+    people_quoted_roster = people_quoted.query.all()
+    for person in people_quoted_roster:
+        if person.id not in all_quoted_people_id:
+            db.session.delete(person)
+    db.session.commit()
+
+# load global variable for users who are authenticated.
+def load_people():
+    '''
+    Load a "people_data" variable to be used in logged in. If user is not logged
+    in, returns None.
+    '''
+    if current_user.is_authenticated:
+        all_quoted_people_id = [name.primary_person_quoted_id for name in quotes.query.all()]
+        people_data = [people_quoted.query.filter_by(id = x).first_or_404().name for x in all_quoted_people_id]
+    else:
+        people_data = None
+    return people_data
 
 def verify_administrator(username):
     '''
@@ -30,14 +57,21 @@ def verify_administrator(username):
         return redirect(url_for('home'))
     return is_admin
 
-@app.route('/')
+
+# ****** ROUTES ***********
+
+@app.route('/',methods=['GET'])
 def home():
-    return render_template('home.html')
+    people_data = load_people()
+    return render_template('home.html',people_data = people_data)
 
 @app.route('/about/')
 @login_required
 def about():
-    return render_template('about.html',title='About')
+    people_data = load_people()
+    return render_template('about.html',
+                            title='About',
+                            people_data = people_data)
 
 @app.route('/login/',methods=['GET',"POST"])
 def login():
@@ -62,7 +96,11 @@ def login():
             if not next_page or url_parse(next_page).netloc != '':
                 next_page = url_for('home')
             return redirect(next_page)
-    return render_template('login.html',title='Sign In', form=form)
+    people_data = load_people()
+    return render_template('login.html',
+                            title='Sign In',
+                            form=form,
+                            people_data = people_data)
 
 @app.route('/logout')
 def logout():
@@ -93,10 +131,11 @@ def admin_verify(username):
         user_data_raw = users.query.all()
         data = {'current_user':current_user,
                 'table':user_data_raw}
-
+        people_data = load_people()
         return render_template('admin_verify.html',
                                 title = 'Administrator Panel: Verify Users',
-                                data = data)
+                                data = data,
+                                people_data = people_data)
 
 @app.route('/admin_manage/<username>', methods=['GET','POST'])
 @login_required
@@ -120,9 +159,11 @@ def admin_manage(username):
                             on='quote_id',
                             how='inner')
         data['current_user'] = current_user
+        people_data = load_people()
         return render_template('admin_manage.html',
                                 title = 'Administrator Panel: Manage',
-                                data = data)
+                                data = data,
+                                people_data = people_data)
 
 @app.route('/verify_user/<username>/<verify_username>', methods=['GET','POST'])
 @login_required
@@ -148,11 +189,11 @@ def delete_quote(username,quote_id):
                 db.session.delete(phr)
             db.session.delete(qt)
         db.session.commit()
-    time.sleep(2)
+        time.sleep(2)
+
+        # cleanup any existing quoted person if we can't find a quote of theirs.
+        clean_people_quoted_table()
     return redirect(url_for('admin_manage',username=username))
-
-
-
 
 
 @app.route('/submit', methods=['POST','GET'])
@@ -202,26 +243,50 @@ def submit():
         db.session.add(new_quote)
         db.session.commit()
 
+        # database cleanup
+        clean_people_quoted_table()
+
         flash("Successfully submitted quote! View it on the 'Quotes' page!" )
         return redirect(url_for('submit'))
-    return render_template('submit.html', title = 'Submit',
-                        people = people, form = submit_form)
+    people_data = load_people()
+    return render_template('submit.html',
+                        title = 'Submit',
+                        people = people,
+                        form = submit_form,
+                        people_data = people_data)
 
 
 @app.route('/quote')
 @login_required
 def quote_page():
-
     page = request.args.get(get_page_parameter(), type=int, default=1)
-    per_page = app.config['QUOTES_PER_PAGE']
-    quotes_paginated = quotes.query.paginate(page, per_page, False)
-    speakers = people_quoted
+    order = request.args.get('sort')
+    person = request.args.get('person_quoted')
+    if person!='person.name' and person!=None:
+        person_quoted = people_quoted.query.filter_by(name=person).first().id
 
+    per_page = app.config['QUOTES_PER_PAGE']
+    if order=='date':
+        quotes_paginated = quotes.query.order_by(quotes.date)\
+                                    .paginate(page, per_page, False)
+
+    elif order=='person' and person_quoted:
+        quotes_paginated = quotes.query.filter_by(primary_person_quoted_id = person_quoted)\
+                                    .order_by(quotes.primary_person_quoted_id)\
+                                    .paginate(page, per_page, False)
+        print(quotes_paginated.items)
+
+    else:
+        quotes_paginated = quotes.query.paginate(page, per_page, False)
+
+    speakers = people_quoted
+    people_data = load_people()
     return render_template('quotes.html',
                             title = 'Quotes',
                             quotes_data = quotes_paginated.items,
                             speakers = speakers,
-                            pagination = quotes_paginated)
+                            pagination = quotes_paginated,
+                            people_data = people_data)
 
 
 
