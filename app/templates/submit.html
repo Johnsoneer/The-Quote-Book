@@ -19,7 +19,7 @@
 <h1>
   <center> Submit a New Quote! </center>
 </h1>
-<a id='add' href='#'>Add Phrase</a>
+
   <form id="quote_form" action="" method="post" role="form">
     {{ form.hidden_tag() }}
 
@@ -46,21 +46,30 @@
       </div>
       {% endfor %}
     </div>
+  <div class='center'>
+    <a id='add' href='#'>Add Phrase</a>
+  </div>
+  <hr></hr>
+  </br>
     {{ form.context.label }}
-    </br>
+  </br>
     {{ form.context() }}
+  </br>
+    <label for='date_label'> When did this happen?</label>
+  </br>
     {{ form.quote_date(class='datepicker') }}
-    <button type="submit" onclick="confirmNewQuotedPerson()">Submit</button>
+  </br>
+  <button type="submit" onclick="confirmNewQuotedPerson()">Submit</button>
 
 
   </form>
 
   {# Form template #}
     <div id="phrase-_-form" class="is-hidden" data-index="_">
-        <label for="phrases-_-quoted_person_name">Person Quoted</label>
+        <label for="phrases-_-quoted_person_name">Speaker</label>
         <input id="phrases-_-quoted_person_name" list = 'quoted_person_name_list' name="phrases-_-quoted_person_name" required type="text" value >
 
-        <label for="phrases-_-phrase_text">Phrase Text</label>
+        <label for="phrases-_-phrase_text">What Did They Say?</label>
         <textarea id="phrases-_-phrase_text" name="phrases-_-phrase_text" required size=500></textarea>
 
         <a class="remove" href="#">Remove</a>

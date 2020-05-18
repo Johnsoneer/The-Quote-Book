@@ -25,7 +25,7 @@ def clean_people_quoted_table():
     works inplace.
     '''
 
-    all_quoted_people_id = [name.primary_person_quoted_id for name in quotes.query.all()]
+    all_quoted_people_id = [name.person_quoted_id for name in phrases.query.all()]
     people_quoted_roster = people_quoted.query.all()
     for person in people_quoted_roster:
         if person.id not in all_quoted_people_id:
@@ -158,6 +158,7 @@ def admin_manage(username):
         data['quotes'] = quotes_df.merge(phrases_df.groupby('quote_id').sum().reset_index(),
                             on='quote_id',
                             how='inner')
+        data['quotes']['submission_date'] = data['quotes']['submission_date'].dt.date
         data['current_user'] = current_user
         people_data = load_people()
         return render_template('admin_manage.html',
@@ -203,6 +204,7 @@ def submit():
     submit_form = SubmitQuoteForm()
     people = people_quoted.query.all()
     people = [x.name for x in people]
+    people_list = list(set(str(x).lower() for x in people))
     submitting_user =  current_user.id
     quoted_in_session = []
     if submit_form.validate_on_submit():
@@ -218,8 +220,6 @@ def submit():
         for phrase in submit_form.phrases:
             person = phrase.quoted_person_name.data
             person_lower = person.lower()
-            people_list = [str(x).lower() for x in people]
-
 
             # add new person_quoted if necessary
             if person_lower not in people_list:
@@ -274,7 +274,6 @@ def quote_page():
         quotes_paginated = quotes.query.filter_by(primary_person_quoted_id = person_quoted)\
                                     .order_by(quotes.primary_person_quoted_id)\
                                     .paginate(page, per_page, False)
-        print(quotes_paginated.items)
 
     else:
         quotes_paginated = quotes.query.paginate(page, per_page, False)

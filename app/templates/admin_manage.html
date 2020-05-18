@@ -13,7 +13,7 @@
 <p1><center>You do not have permission to view this page!!!</center></p1>
 
 {%  endif %}
-
+<h1> <center> Manage Quotes </h1> </center>
 <table>
   <thead>
     <th>Date Submitted</th>
@@ -27,8 +27,8 @@
         <th> {{ data['quotes']['name'][i]}}</th>
         <th> {{ data['quotes']['phrases'][i]}}</th>
           <th> <input type="button"
-                      onclick="verifyDelete('{{ data['current_user'].username }}','{{ data['quotes']['quote_id'][i] }}')">
-                Delete </th>
+                      onclick="verifyDelete('{{ data['current_user'].username }}','{{ data['quotes']['quote_id'][i] }}')"
+                      value='DELETE QUOTE'> </th>
 
       </tr>
     {%endfor%}
