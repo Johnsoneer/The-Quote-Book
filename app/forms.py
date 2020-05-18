@@ -50,7 +50,7 @@ class phraseForm(Form):
     '''
     Subform of Quote form. Creates a new unique phrase for each speaker.
     '''
-    quoted_person_name = StringField("Person Quoted",
+    quoted_person_name = StringField("Speaker",
                                     validators = [DataRequired(),
                                     length(min=3,max=16)])
     phrase_text = TextAreaField('What Did They Say?',

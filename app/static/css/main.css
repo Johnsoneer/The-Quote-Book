@@ -86,6 +86,204 @@ blockquote:after{
 
 
 /*
+ * "Admin Tables" Formatting
+ */
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th,tb {
+  text-align: left;
+  padding: 8px;
+  font-weight:400;
+}
+
+
+
+tr:nth-child(even) {background-color: #f2f2f2;}
+tr:hover {background-color: #ccc;}
+
+input[type=button] {
+  background-color: darkred;
+  width : 100%;
+  border: none;
+  color: #444;
+  border-radius: 8px;
+  padding: 16px 32px;
+  text-decoration: none;
+  cursor: pointer;
+}
+ul[id='admin_layout'] {
+  list-style-type: none;
+  margin-left: 38%;
+  padding: 0;
+  overflow: hidden;
+
+}
+
+li[id='admin_layout'] {
+  float: left;
+  padding:10px;
+  margin_left:10px;
+  border-radius:6px;
+  background-color:  #f2f2f2;
+
+}
+
+li[id='admin_layout'] a {
+  display: block;
+  color: #444;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+li[id='admin_layout']:hover:not(.active) {
+  background-color: #ccc;
+}
+
+
+
+/*
+ * Login / Password formatting
+ */
+input[id=username] {
+  height:20px;
+}
+
+input[type=password] {
+  width: 20;
+  padding: 12px 20px;
+  margin: 8px ;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  height:20px;
+
+}
+
+input[type='submit']{
+  background-color: #ccc;
+  border: none;
+  color: #444;
+  border-radius: 8px;
+  padding: 8px 16px;
+  text-decoration: none;
+  font-size:20px;
+  cursor: pointer;
+  margin-left:3%;
+
+}
+input[id='remember_me']{
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  cursor: pointer;
+  margin-left:15px;
+
+}
+
+
+
+/*
+ * "Submit Quote" Form Formatting
+ */
+
+
+input[type=text] {
+  width: 20;
+  padding: 12px 20px;
+  margin: 8px ;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+textarea {
+  width: 200px;
+  height: 50px;
+  margin: 0px 20px;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  resize: none;
+  vertical-align: bottom;
+}
+
+textarea[id='context']{
+  vertical-align:top;
+  margin: 20px;
+  width: 300px;
+  margin-left:10%;
+}
+
+label {
+    padding: 20px;
+}
+
+label[for='datepicker'] {
+  margin:2px;
+}
+
+a.remove {
+  background-color: #ccc;
+  width : 20px;
+  border: none;
+  color: #444;
+  border-radius: 4px;
+  padding: 8px 16px;
+  text-decoration: none;
+  font-size:20px;
+  cursor: pointer;
+}
+
+
+.center {
+  justify-content: center;
+  display: flex;
+}
+
+a[id='add'] {
+  background-color: #ccc;
+  border: none;
+  border-radius: 4px;
+  color: #444;
+  cursor: pointer;
+  font-size:16px;
+  margin-top:20px;
+  margin-bottom:20px;
+  padding: 8px 16px;
+  text-decoration: none;
+  width:200px;
+  text-align:center;
+}
+
+button[type=submit] {
+  background-color: #ccc;
+  width : 100%;
+  border: none;
+  color: #444;
+  border-radius: 8px;
+  padding: 16px 32px;
+  text-decoration: none;
+  font-size:20px;
+  cursor: pointer;
+  margin-top: 100px;
+}
+
+input[type="date"]{
+  font-size:16px;
+  font-family:"Helvetica Neue";
+  font-weight:200;
+  text-align:right;
+  border-radius:4px;
+  margin-left:10%;
+  margin-top: 10px;
+}
+/*
  * Formatting the header area
  */
 header {
@@ -235,5 +433,4 @@ h3 {
 
 .sub-dropdown:hover .sub-dropdown-content {display: block;}
 .sub-dropdown-content a:hover {background-color: #ddd;}
-
 .sub-dropdown:hover .sub-dropbtn {background-color:   #ddd;}
