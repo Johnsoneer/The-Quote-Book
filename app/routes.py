@@ -7,6 +7,7 @@ from app import app,db
 from app.models import users,people_quoted, quotes,phrases
 import pandas as pd
 import time
+import random
 
 
 '''
@@ -41,6 +42,7 @@ def load_people():
     if current_user.is_authenticated:
         all_quoted_people_id = [name.primary_person_quoted_id for name in quotes.query.all()]
         people_data = [people_quoted.query.filter_by(id = x).first_or_404().name for x in all_quoted_people_id]
+        people_data.sort()
     else:
         people_data = None
     return people_data
@@ -60,13 +62,12 @@ def verify_administrator(username):
 
 # ****** ROUTES ***********
 
-@app.route('/',methods=['GET'])
+@app.route('/')
 def home():
     people_data = load_people()
     return render_template('home.html',people_data = people_data)
 
 @app.route('/about/')
-@login_required
 def about():
     people_data = load_people()
     return render_template('about.html',
@@ -239,6 +240,8 @@ def submit():
         # whoever spoke last is the primary person quoted
         new_quote.primary_person_quoted_id = quoted_in_session[-1]
         new_quote.date = submit_form.quote_date.data
+        new_quote.phonetic_date = str(pd.to_datetime(new_quote.date).month_name()) \
+                                    + " " +str(new_quote.date.year)
         #add form data to the database
         db.session.add(new_quote)
         db.session.commit()
@@ -287,7 +290,16 @@ def quote_page():
                             pagination = quotes_paginated,
                             people_data = people_data)
 
-
+@app.route('/random_quote')
+@login_required
+def random_quote():
+    random_index = random.randrange(0,len(quotes.query.all()))
+    random_quote = quotes.query.all()[random_index]
+    people_data = load_people()
+    return render_template('random_quote.html',
+                            quote = random_quote,
+                            speakers = people_quoted,
+                            people_data = people_data)
 
 
 if __name__=='__main__':

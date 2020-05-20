@@ -7,11 +7,9 @@
   <body>
     <header>
       <div class="container">
-        <h1 class="logo">Will's web app</h1>
+        <h1 class="logo" ><a href="{{ url_for('home') }}" style="text-transform: uppercase;">The Quotebook</a></h1>
         <strong><nav>
           <ul class="menu">
-            <li><a href="{{ url_for('home') }}">Home</a></li>
-            <li><a href="{{ url_for('about') }}">About</a></li>
              {% if current_user.is_anonymous %}
             <li><a href="{{ url_for('login') }}">Log In</a></li>
              {% else %}
@@ -19,6 +17,7 @@
               <div class="dropdown">
                 <button class="dropbtn"> Quotes </button>
                 <div class="dropdown-content">
+                  <a href="{{ url_for('random_quote') }}"> Random</a>
                   <a href="{{ url_for('quote_page',sort='date') }}">By Date</a>
                   <div class='sub-dropdown'>
                     <button class='sub-dropbtn'>By Person</button>
@@ -32,18 +31,20 @@
               </div>
             </li>
             <li><a href="{{ url_for('submit') }}">Submit</a></li>
-            <li><a href="{{ url_for('logout') }}">Log Out </a></li>
             {% endif %}
-
+              <li><a href="{{ url_for('about') }}">About</a></li>
+            {% if not current_user.is_anonymous %}
+              <li><a href="{{ url_for('logout') }}" style="font-size:12px">Log Out </a></li>
+            {% endif %}
             {% if current_user.is_admin %}
-            <li><a href="{{ url_for('admin_verify',username=current_user.username) }}">Admin Panel </a></li>
+              <li><a href="{{ url_for('admin_verify',username=current_user.username) }}" style="font-size:12px">Admin Panel </a></li>
             {% endif %}
 
           </ul>
         </nav></strong>
       </div>
     </header>
-      <div class="container">
+      <div class="container animated">
        {% with messages = get_flashed_messages() %}
        {% if messages %}
        <ul>
