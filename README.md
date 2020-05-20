@@ -6,17 +6,18 @@ A Web App that makes use of a friend's self-curated dataset of funny out-of-cont
 
 # Recent Updates
 
-### TASK-12
-- UX Design on the Submit Page.
-- duplicate-speaker bug fix
-
+### TASK-13
+- Added a "Random Quote" page to sample from existing quotes.
+- Added a new field in the "Quotes" table for a phonetic date we can pull to make the date display prettier.
+- Numerous additions to the CSS, including basic animations.
+- Content added to the Home and About pages.
+- UX on header/nav streamlined.
+- Decided against the photo of Nicole on the page. 
 
 # Next Updates
-- Content on Home and About pages.
-  - Demo Quote on Home Page
-  - Photo of Nicole on About page.
-- Javascript for quotes pulling up
+- Password change functionality
+- Email linkage. 
 
 # On Deck
-- "Random" quote selector
+- Color and Photo assets for design finishing touches. 
 
