@@ -49,6 +49,7 @@ class people_quoted(db.Model):
 class quotes(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     date = db.Column(db.Date)
+    phonetic_date = db.Column(db.String(32))
     submitted_by_id = db.Column(db.Integer,db.ForeignKey('users.id'))
     primary_person_quoted_id = db.Column(db.Integer,db.ForeignKey('people_quoted.id'))
     submitted_datetime = db.Column(db.DateTime,index=True,default=datetime.utcnow)

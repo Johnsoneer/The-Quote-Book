@@ -1,0 +1,28 @@
+<!DOCTYPE HTML>
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div class ='random_quote'>
+  <p class='quote date'>
+      {{ quote.phonetic_date}}
+  </p>
+  {% if quote.context %}
+    <p class='context'>
+        CONTEXT: {{ quote.context }}
+    </p>
+  {% endif %}
+  {%for phrase in quote.phrases%}
+    <br />
+      <speaker>
+        {{ speakers.query.filter_by(id = phrase.person_quoted_id).first().name }}
+      </speaker>
+      <blockquote>
+        <phrasebody>
+          {{ phrase.phrase_text }}
+        </phrasebody>
+      </blockquote>
+  {%endfor%}
+  <br />
+</div>
+{% endblock %}
