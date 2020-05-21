@@ -1,8 +1,10 @@
 from . import db
 from datetime import datetime
+from time import time
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
-from app import login
+from app import login,app
+import jwt
 
 '''
 The following classes spell out the db schema for flask to build/insert data into.
@@ -37,6 +39,20 @@ class users(UserMixin, db.Model):
 
     def check_is_verified(self):
         return self.is_verified
+
+    def get_reset_password_token(self, expires_in=600):
+        return jwt.encode(
+            {'reset_password':self.id, 'exp':expires_in+time()},
+            app.config['SECRET_KEY'], algorithm='HS256').decode('utf-8')
+
+    @staticmethod
+    def verify_reset_password_token(token):
+        try:
+            id = jwt.decode(token, app.config['SECRET_KEY'],
+                            algorithms=['HS256'])['reset_password']
+        except:
+            return
+        return users.query.get(id)
 
 class people_quoted(db.Model):
     id = db.Column(db.Integer, primary_key=True)

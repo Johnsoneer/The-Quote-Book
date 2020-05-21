@@ -57,6 +57,16 @@ class phraseForm(Form):
                                 validators= [DataRequired(),
                                 length(max=500)])
 
+class ResetPasswordRequestForm(FlaskForm):
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    submit = SubmitField('Request Password Reset')
+
+class ResetPasswordForm(FlaskForm):
+    password = PasswordField('Password', validators=[DataRequired()])
+    password2 = PasswordField(
+        'Repeat Password', validators=[DataRequired(), EqualTo('password')])
+    submit = SubmitField('Request Password Reset')
+
 class SubmitQuoteForm(FlaskForm):
     '''
     Form object for the Submit page. This form requests information from the user that turns into a new quote.
