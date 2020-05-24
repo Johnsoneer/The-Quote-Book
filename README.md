@@ -6,15 +6,12 @@ A Web App that makes use of a friend's self-curated dataset of funny out-of-cont
 
 # Recent Updates
 
-### TASK-14
-- Password change functionality
-- Email linkage.
-
-# Next Updates
+### TASK-15
 - Color and Photo assets for design finishing touches.
 
-# On Deck
+# Next Updates
 - Push onto AWS for production!
+
 
 
 # About
