@@ -12,7 +12,7 @@ class Config(object):
     SECRET_KEY = os.environ.get('QUOTEBOOK_SECRET')
 
 
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL')
+    SQLALCHEMY_DATABASE_URI = 'postgresql://thequotebookdbinstance.crrajmxjcrsc.us-east-2.rds.amazonaws.com'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     QUOTES_PER_PAGE = 6
     MAIL_SERVER = os.environ.get('MAIL_SERVER')
