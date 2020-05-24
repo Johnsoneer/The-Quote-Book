@@ -2,50 +2,70 @@ body {
   margin: 0;
   padding: 0;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  color: #444;
+  color: #f9f9f9;
+  background-image: url({{ url_for('static', filename='img/home.jpg') }});
 }
 /*
  * Main quote formatting.
  */
 .quote main {
-  margin: 20px;
-  padding: 10px;
-  opacity: .9;
-
 }
 .quote speaker {
-  font-weight: bold;
+  font-weight: 300;
   font-size: 20px;
-  margin: 90px;
+  margin-left: 15%;
 }
 .quote phrasebody {
   font-family: "monospace"
   font-size: 20px;
+  font-size:20px;
   margin: 20px;
 }
 /*
  * Random quote formatting.
  */
-.random_quote main {
-  opacity: .9;
-  margin-left:15%;
-  margin-right:15%;
-  margin-bottom:10%;
+.random_quote {
+  margin:12.5%;
 }
 .random_quote speaker {
   font-weight: bold;
   font-size: 24px;
-  padding-left:100px;
 }
+
 .random_quote phrasebody {
   font-family: "monospace"
   font-size: 24px;
 }
 
+/*
+ * Blockquote
+ */
+
+blockquote {
+  font-family: monospace;
+  font-size: large;
+  margin-left:12.5%;
+  margin-right:12.5%;
+  quotes: "\201C""\201D""\2018""\2019";
+  text-indent:-110px;
+}
+blockquote:before {
+  color: #ccc;
+  content: open-quote;
+  font-size: 4em;
+  vertical-align: -0.25em;
+  opacity:.9;
+  padding-left:20px;
+  margin-left:20px;
+}
+blockquote:after{
+  content: no-close-quote;
+}
 
 /*
  * Additional quote-related objects.
  */
+
 .context {
   font-size: 20px;
   text-align: center;
@@ -58,14 +78,17 @@ body {
   margin:40px;
   text-align: center;
   font-size: 30px;
-
 }
 pagination {
   display: inline-block;
 }
 
+/*
+ * Pagination
+ */
+
 .pagination a {
-  color: black;
+  color: #ddd;
   float: left;
   padding: 8px 16px;
   text-decoration: none;
@@ -75,41 +98,16 @@ pagination {
 }
 
 .pagination a.active {
-  background-color: #ddd;
+  background-color:#082c3c;
   color: white;
+  opacity:.;
   border: 1px solid #ddd;
 }
 .pagination a.ellipsis {
   color: white;
   border: 1px solid #ddd;
 }
-
-.pagination a:hover:not(.active) {background-color: #ddd;}
-
-blockquote {
-  background: #f9f9f9;
-  border-left: 10px solid #ccc;
-  font-family: monospace;
-  font-size: large;
-  margin: 1.5em 50px;
-  padding: 1.25em 10px;
-  quotes: "\201C""\201D""\2018""\2019";
-}
-blockquote:before {
-  color: #ccc;
-  content: open-quote;
-  font-size: 4em;
-  line-height: 0.1em;
-  margin-right: 0.25em;
-  vertical-align: -0.4em;
-}
-blockquote p {
-  display: inline;
-}
-blockquote:after{
-  content: no-close-quote;
-}
-
+.pagination a:hover:not(.active) {background-color: #266986;}
 
 /*
  * "Admin Tables" Formatting
@@ -125,8 +123,6 @@ th,tb {
   padding: 8px;
   font-weight:400;
 }
-
-
 
 tr:nth-child(even) {background-color: #f2f2f2;}
 tr:hover {background-color: #ccc;}
@@ -146,7 +142,6 @@ ul[id='admin_layout'] {
   margin-left: 38%;
   padding: 0;
   overflow: hidden;
-
 }
 
 li[id='admin_layout'] {
@@ -155,7 +150,6 @@ li[id='admin_layout'] {
   margin_left:10px;
   border-radius:6px;
   background-color:  #f2f2f2;
-
 }
 
 li[id='admin_layout'] a {
@@ -169,11 +163,10 @@ li[id='admin_layout']:hover:not(.active) {
   background-color: #ccc;
 }
 
-
-
 /*
  * Login / Password formatting
  */
+
 input[id=username] {
   height:20px;
 }
@@ -187,7 +180,6 @@ input[type=password] {
   border-radius: 4px;
   box-sizing: border-box;
   height:20px;
-
 }
 
 input[type='submit']{
@@ -200,15 +192,14 @@ input[type='submit']{
   font-size:20px;
   cursor: pointer;
   margin-left:3%;
-
 }
+
 input[id='remember_me']{
   border: none;
   border-radius: 8px;
   padding: 8px 16px;
   cursor: pointer;
   margin-left:15px;
-
 }
 
 
@@ -309,11 +300,12 @@ input[type="date"]{
   margin-left:10%;
   margin-top: 10px;
 }
+
 /*
  * Formatting the header area
  */
+
 header {
-  background-color: #ccc;
   height: 55px;
   width: 100%;
   opacity: .9;
@@ -337,9 +329,11 @@ header h1.logo:hover {
   color: #fff;
   text-decoration: none;
 }
+
 /*
  * Centering the body content
  */
+
 .container {
   margin: 0 35px 0 20px;
 
@@ -347,14 +341,12 @@ header h1.logo:hover {
 div.home {
   padding:12.5%;
   margin:10%;
-  background-color: #E6E6FA;
   -webkit-border-radius: 6px;
      -moz-border-radius: 6px;
           border-radius: 6px;
 }
 div.about {
   padding: 10px 150px 30px 20px;
-  background-color: #E6E6FA;
   -webkit-border-radius: 6px;
      -moz-border-radius: 6px;
           border-radius: 6px;
@@ -379,6 +371,10 @@ h3 {
   text-align: left;
   letter-spacing: -1px;
 }
+.about p {
+  color:#858e9e;
+
+}
 .menu {
   float: right;
   margin-top: 8px;
@@ -390,40 +386,35 @@ h3 {
   margin-left: 35px;
 }
 .menu li a {
-  color: #444;
+  color: #f1f1f1;;
   text-decoration: none;
 }
 .submenu {
   float: center;
   margin_top: 8px;
 }
-
 .dropbtn {
-  color: #444;
+  color: #f1f1f1;
   font-size: 16px;
   border: none;
-  background-color: #ccc;
+  background-color: #141414;
   width: 100%;
   font-weight: bold;
   padding:10px;
 }
-
 .dropdown {
   position: relative;
   display: inline-block;
-
+  background-color: #141414;
 }
-
 .dropdown-content {
   display: none;
   position: absolute;
-  background-color: #f1f1f1;
+  background-color: #141414;
   min-width: 160px;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   z-index: 1;
-
 }
-
 .dropdown-content a {
   color: black;
   padding: 12px 16px;
@@ -431,48 +422,39 @@ h3 {
   display: block;
 }
 
-.dropdown-content a:hover {background-color: #ddd;}
-
+.dropdown-content a:hover {background-color: #212121;}
 .dropdown:hover .dropdown-content {display: block;}
-
-.dropdown:hover .dropbtn {background-color:  #f1f1f1;}
-
-
+.dropdown:hover .dropbtn {background-color:  #212121;}
 .sub-dropbtn {
-  color: #444;
+  color: #f1f1f1;
   font-size: 16px;
   border: none;
-  background-color:#f1f1f1;
+  background-color: #141414;
   width: 100%;
   font-weight: bold;
   padding:18px;
   text-align: left;
 }
-
 .sub-dropdown {
   position: relative;
 }
-
 .sub-dropdown-content {
   display: none;
   position: absolute;
-  background-color: #f1f1f1;
+  background-color: #141414;
   min-width: 160px;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   z-index: 1;
-
 }
-
 .sub-dropdown-content a {
   color: black;
   padding: 12px 16px;
   text-decoration: none;
   display: block;
 }
-
 .sub-dropdown:hover .sub-dropdown-content {display: block;}
-.sub-dropdown-content a:hover {background-color: #ddd;}
-.sub-dropdown:hover .sub-dropbtn {background-color:   #ddd;}
+.sub-dropdown-content a:hover {background-color: #212121;}
+.sub-dropdown:hover .sub-dropbtn {background-color:   #212121;}
 
 /* Animation */
 
@@ -483,7 +465,7 @@ h3 {
   -o-animation: fadein 1.5s; /* Opera */
 }
 
- @keyframes fadein {
+@keyframes fadein {
     from {
         transform: translate3d(0,40px,0);
         opacity:0

@@ -44,6 +44,7 @@ def load_people():
         all_quoted_people_id = [name.primary_person_quoted_id for name in quotes.query.all()]
         people_data = [people_quoted.query.filter_by(id = x).first_or_404().name for x in all_quoted_people_id]
         people_data.sort()
+        people_data = set(people_data)
     else:
         people_data = None
     return people_data
