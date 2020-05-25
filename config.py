@@ -10,9 +10,9 @@ forms and ensuring we are protected from CSRF attacks.
 
 class Config(object):
     SECRET_KEY = os.environ.get('QUOTEBOOK_SECRET')
-
-
-    SQLALCHEMY_DATABASE_URI = 'postgresql://thequotebookdbinstance.crrajmxjcrsc.us-east-2.rds.amazonaws.com'
+    DATABASE_USER = os.environ.get('DATABASE_USER')
+    DATABASE_PASSWORD = os.environ.get('DATABASE_PASSWORD')
+    SQLALCHEMY_DATABASE_URI = 'postgresql://{username}:{password}@quotebookdb.crrajmxjcrsc.us-east-2.rds.amazonaws.com:5432/postgres'.format(username = DATABASE_USER, password = DATABASE_PASSWORD)
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     QUOTES_PER_PAGE = 6
     MAIL_SERVER = os.environ.get('MAIL_SERVER')
