@@ -4,9 +4,9 @@ function areYouSure(username,verify_username) {
     if (confirm("Are you sure? Verify user "+verify_username+"?")) {
       document.location.href='/verify_user/'+username+'/'+verify_username;
     } else {
-    document.location.href='/admin/'+username;
+    document.location.href='/admin_verify/'+username;
   }
-  document.location.href='/admin/'+username
+  document.location.href='/admin_verify/'+username
   ;
 }
 

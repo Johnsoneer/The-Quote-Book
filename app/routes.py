@@ -181,7 +181,7 @@ def verify_user(username,verify_username):
         db.session.add(user_to_verify)
         db.session.commit()
 
-        return redirect(url_for('/admin_verify/{}'.format(user.username)))
+        return redirect(url_for('admin_verify',username=username))
 
 @app.route('/delete_quote/<username>/<quote_id>', methods=['GET','DELETE','POST'])
 @login_required
